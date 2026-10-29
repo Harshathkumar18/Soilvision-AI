@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SoilVision AI — AI-powered soil health analysis, scientific insights, and personalized recommendations for Indian farmers.">
+  <meta name="author" content="SoilVision AI Initiative">
+  <title>{% block title %}SoilVision AI{% endblock %} | SoilVision AI</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+
+  <!-- Design System -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<!-- ── Site Header ────────────────────────────────────────── -->
+<header class="site-header" id="siteHeader">
+  <div class="container">
+    <div class="nav-wrapper">
+
+      <a href="{{ url_for('home') }}" class="brand-link">
+        <div class="brand-icon-box">
+          <i class="fa-solid fa-seedling"></i>
+        </div>
+        <span>SoilVision AI</span>
+      </a>
+
+      <nav>
+        <ul class="nav-menu" id="siteNavMenu">
+          <li class="nav-item {% if request.endpoint == 'home' %}active{% endif %}">
+            <a href="{{ url_for('home') }}"><i class="fa-solid fa-house"></i> {{ t('nav_home') }}</a>
+          </li>
+          <li class="nav-item {% if request.endpoint == 'problems' %}active{% endif %}">
+            <a href="{{ url_for('problems') }}"><i class="fa-solid fa-plant-wilt"></i> {{ t('nav_problems') }}</a>
+          </li>
+          <li class="nav-item {% if request.endpoint == 'analyzer' %}active{% endif %}">
+            <a href="{{ url_for('analyzer') }}"><i class="fa-solid fa-microscope"></i> {{ t('nav_analyzer') }}</a>
+          </li>
+          <li class="nav-item {% if request.endpoint == 'upload_page' %}active{% endif %}">
+            <a href="{{ url_for('upload_page') }}"><i class="fa-solid fa-file-arrow-up"></i> {{ t('nav_upload') }}</a>
+          </li>
+          <li class="nav-item {% if request.endpoint == 'soil_map' %}active{% endif %}">
+            <a href="{{ url_for('soil_map') }}"><i class="fa-solid fa-map"></i> {{ t('nav_map') }}</a>
+          </li>
+          <li class="nav-item {% if request.endpoint in ['my_reports', 'view_report'] %}active{% endif %}">
+            <a href="{{ url_for('my_reports') }}"><i class="fa-solid fa-folder-open"></i> My Reports</a>
+          </li>
+          <li class="nav-item {% if request.endpoint == 'quiz' %}active{% endif %}">
+            <a href="{{ url_for('quiz') }}"><i class="fa-solid fa-graduation-cap"></i> {{ t('nav_quiz') }}</a>
+          </li>
+          <li class="nav-item {% if request.endpoint == 'about' %}active{% endif %}">
+            <a href="{{ url_for('about') }}"><i class="fa-solid fa-circle-info"></i> {{ t('nav_about') }}</a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button type="button" class="btn-lang" id="btnLangToggle" data-lang="{{ lang }}" title="Switch Language">
+          <i class="fa-solid fa-language"></i>
+          <span>{{ t('lang_switch') }}</span>
+        </button>
+        <button type="button" class="mobile-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<!-- ── Flash Messages ─────────────────────────────────────── -->
+<main>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div class="container" style="padding-top:1rem;">
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}" role="alert">
+      <div style="display:flex;align-items:center;gap:0.75rem;">
+        <i class="fa-solid {% if category == 'success' %}fa-circle-check{% elif category == 'danger' %}fa-circle-xmark{% elif category == 'warning' %}fa-triangle-exclamation{% else %}fa-circle-info{% endif %}"></i>
+        <span>{{ message }}</span>
+      </div>
+      <button type="button" class="alert-close" onclick="this.parentElement.remove()" aria-label="Close">&times;</button>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endwith %}
+
+{% block content %}{% endblock %}
+</main>
+
+<!-- ── AI Chat Button ─────────────────────────────────────── -->
+<button type="button" class="ai-floating-btn" id="aiFloatingBtn" title="Ask SoilVision AI Assistant">
+  <i class="fa-solid fa-robot"></i>
+</button>
+
+<!-- ── AI Chat Drawer ─────────────────────────────────────── -->
+<aside class="ai-drawer" id="aiDrawer" aria-label="SoilVision AI Assistant">
+  <div class="ai-drawer-header">
+    <h3><i class="fa-solid fa-leaf"></i> SoilVision Assistant</h3>
+    <button type="button" class="ai-close-btn" id="aiCloseBtn" aria-label="Close">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+  <div class="ai-chat-body" id="aiChatBody">
+    <div class="chat-bubble bot">
+      🌱 Namaste! I'm your <strong>SoilVision AI Assistant</strong>. Ask me anything about soil health, pH management, nutrient deficiencies, green manuring, erosion prevention, or how to read your soil test card — in English or Telugu!
+    </div>
+  </div>
+  <div class="ai-chat-footer">
+    <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="Ask about soil pH, erosion, compost..." autocomplete="off">
+    <button type="button" class="btn btn-primary btn-sm" id="aiSendBtn" style="border-radius:var(--radius-pill);padding:0.5rem 1rem;">
+      <i class="fa-solid fa-paper-plane"></i>
+    </button>
+  </div>
+</aside>
+
+<!-- ── Site Footer ────────────────────────────────────────── -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3><i class="fa-solid fa-seedling"></i> SoilVision AI</h3>
+        <p class="footer-desc">An AI-powered soil health platform aligned with ICAR benchmarks and the Soil Health Card scheme. Built to empower Indian farmers with scientific, actionable insights.</p>
+        <p class="text-xs text-faint" style="display:flex;align-items:center;gap:0.5rem;">
+          <i class="fa-solid fa-shield-halved" style="color:var(--clr-primary-light)"></i>
+          Scientifically aligned with ICAR &amp; NBSS&amp;LUP guidelines.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="{{ url_for('home') }}"><i class="fa-solid fa-angle-right"></i> Home</a></li>
+          <li><a href="{{ url_for('problems') }}"><i class="fa-solid fa-angle-right"></i> Soil Problems</a></li>
+          <li><a href="{{ url_for('analyzer') }}"><i class="fa-solid fa-angle-right"></i> Soil Analyzer</a></li>
+          <li><a href="{{ url_for('upload_page') }}"><i class="fa-solid fa-angle-right"></i> Upload Report</a></li>
+          <li><a href="{{ url_for('soil_map') }}"><i class="fa-solid fa-angle-right"></i> Soil Map</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul class="footer-links">
+          <li><a href="{{ url_for('quiz') }}"><i class="fa-solid fa-angle-right"></i> Learning Zone</a></li>
+          <li><a href="{{ url_for('about') }}"><i class="fa-solid fa-angle-right"></i> About Project</a></li>
+          <li><a href="https://soilhealth.dac.gov.in/" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> Soil Health Card Portal</a></li>
+          <li><a href="https://icar.org.in/" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> ICAR India</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Need Expert Guidance?</h4>
+        <p class="text-sm text-muted" style="margin-bottom:0.75rem;">Visit your nearest Krishi Vigyan Kendra (KVK) or district agricultural office for free professional soil testing.</p>
+        <a href="{{ url_for('analyzer') }}" class="btn btn-primary btn-sm btn-block" style="margin-bottom:0.5rem;">
+          <i class="fa-solid fa-flask"></i> Analyze My Soil
+        </a>
+        <a href="{{ url_for('about') }}#contact" class="btn btn-secondary btn-sm btn-block">
+          <i class="fa-solid fa-envelope"></i> Contact Us
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 SoilVision AI. Built for sustainable agriculture.</p>
+      <p style="max-width:560px;text-align:right;">{{ t('footer_disclaimer') }}</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<!-- Leaflet.js -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<!-- Main JS -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

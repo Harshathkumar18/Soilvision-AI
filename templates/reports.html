@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% block title %}My Soil Reports — SoilVision AI{% endblock %}
+
+{% block content %}
+<div style="background:var(--grad-hero);padding:var(--space-12) 0 var(--space-8);border-bottom:1px solid var(--clr-dark-border);">
+  <div class="container">
+    <div class="section-badge" style="margin-bottom:var(--space-4);"><i class="fa-solid fa-folder-open"></i> Soil Records Archive</div>
+    <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:var(--space-3);">My Soil Reports &amp; History</h1>
+    <p class="text-muted" style="max-width:650px;">Access your saved soil health cards, review historical fertility trends, and compare soil condition improvements across crop cycles.</p>
+  </div>
+</div>
+
+<section class="section-pad">
+  <div class="container">
+
+    <!-- Dashboard Summary Cards -->
+    <div class="grid grid-4 grid-auto" style="margin-bottom:var(--space-10);">
+      <div class="card-stat">
+        <div class="card-stat-icon green"><i class="fa-solid fa-file-waveform"></i></div>
+        <div>
+          <div class="card-stat-value">{{ stats.total_reports }}</div>
+          <div class="card-stat-label">Total Reports Analyzed</div>
+        </div>
+      </div>
+      <div class="card-stat">
+        <div class="card-stat-icon amber"><i class="fa-solid fa-gauge-high"></i></div>
+        <div>
+          <div class="card-stat-value">{{ stats.avg_health_score }}<span style="font-size:1.1rem;color:var(--clr-text-muted);">/100</span></div>
+          <div class="card-stat-label">Average Soil Health Score</div>
+        </div>
+      </div>
+      <div class="card-stat">
+        <div class="card-stat-icon red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div>
+          <div class="card-stat-value">{{ stats.nutrient_issues }}</div>
+          <div class="card-stat-label">Nutrient Deficiencies Detected</div>
+        </div>
+      </div>
+      <div class="card-stat">
+        <div class="card-stat-icon blue"><i class="fa-solid fa-map-location-dot"></i></div>
+        <div>
+          <div class="card-stat-value">{{ stats.saved_locations }}</div>
+          <div class="card-stat-label">Saved Farm Locations</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reports Table Card -->
+    <div class="card">
+      <div class="flex-between" style="margin-bottom:var(--space-6);flex-wrap:wrap;gap:var(--space-4);">
+        <div>
+          <h2 style="font-size:1.3rem;margin-bottom:var(--space-1);">Saved Soil Health Cards</h2>
+          <p class="text-sm text-muted">Showing all historical analyses stored in your local SQLite database.</p>
+        </div>
+        <a href="{{ url_for('analyzer') }}" class="btn btn-primary btn-sm">
+          <i class="fa-solid fa-plus"></i> New Soil Analysis
+        </a>
+      </div>
+
+      {% if records %}
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;text-align:left;font-size:0.875rem;">
+          <thead>
+            <tr style="border-bottom:1px solid var(--clr-dark-border2);color:var(--clr-text-faint);text-transform:uppercase;font-size:0.75rem;letter-spacing:0.06em;">
+              <th style="padding:var(--space-3) var(--space-4);">ID</th>
+              <th style="padding:var(--space-3) var(--space-4);">Date</th>
+              <th style="padding:var(--space-3) var(--space-4);">Farmer / Farm</th>
+              <th style="padding:var(--space-3) var(--space-4);">Target Crop</th>
+              <th style="padding:var(--space-3) var(--space-4);">Location</th>
+              <th style="padding:var(--space-3) var(--space-4);">pH</th>
+              <th style="padding:var(--space-3) var(--space-4);">OC (%)</th>
+              <th style="padding:var(--space-3) var(--space-4);">Health Score</th>
+              <th style="padding:var(--space-3) var(--space-4);text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in records %}
+            <tr style="border-bottom:1px solid var(--clr-dark-border);transition:background 0.2s;" onmouseover="this.style.background='rgba(22,163,74,0.04)'" onmouseout="this.style.background='transparent'">
+              <td style="padding:var(--space-4);font-weight:700;color:var(--clr-primary-light);">#{{ "%04d"|format(r.id) }}</td>
+              <td style="padding:var(--space-4);color:var(--clr-text-muted);">{{ r.created_at[:10] if r.created_at else 'Active' }}</td>
+              <td style="padding:var(--space-4);font-weight:600;color:var(--clr-text);">{{ r.farmer_name or 'Farmer' }}</td>
+              <td style="padding:var(--space-4);"><span class="tag">{{ r.target_crop or 'General' }}</span></td>
+              <td style="padding:var(--space-4);color:var(--clr-text-muted);">
+                {% if r.district or r.state %}
+                  {{ r.district }}{% if r.district and r.state %}, {% endif %}{{ r.state }}
+                {% else %}
+                  <span class="text-faint">—</span>
+                {% endif %}
+              </td>
+              <td style="padding:var(--space-4);">
+                {% if r.ph %}
+                  <strong style="color:{% if r.ph < 5.5 or r.ph > 8.5 %}var(--clr-danger){% elif 6.5 <= r.ph <= 7.5 %}var(--clr-primary-light){% else %}var(--clr-warning){% endif %};">{{ r.ph }}</strong>
+                {% else %}
+                  <span class="text-faint">—</span>
+                {% endif %}
+              </td>
+              <td style="padding:var(--space-4);">
+                {% if r.oc %}
+                  <strong style="color:{% if r.oc < 0.50 %}var(--clr-danger){% elif r.oc >= 0.75 %}var(--clr-primary-light){% else %}var(--clr-warning){% endif %};">{{ r.oc }}%</strong>
+                {% else %}
+                  <span class="text-faint">—</span>
+                {% endif %}
+              </td>
+              <td style="padding:var(--space-4);">
+                {% if r.health_score %}
+                  <span class="badge {% if r.health_score >= 75 %}badge-success{% elif r.health_score >= 50 %}badge-warning{% else %}badge-danger{% endif %}">
+                    {{ r.health_score }} / 100
+                  </span>
+                {% else %}
+                  <span class="text-faint">Analyzed</span>
+                {% endif %}
+              </td>
+              <td style="padding:var(--space-4);text-align:right;">
+                <div style="display:inline-flex;gap:var(--space-2);">
+                  <a href="{{ url_for('view_report', record_id=r.id) }}" class="btn btn-secondary btn-sm" title="View Full Report">
+                    <i class="fa-solid fa-eye"></i> View
+                  </a>
+                  <form action="{{ url_for('delete_report', record_id=r.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to permanently delete Soil Report #{{ r.id }}?');">
+                    <button type="submit" class="btn btn-danger btn-sm" title="Delete Report">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="no-data">
+        <i class="fa-solid fa-folder-open"></i>
+        <h3>No Soil Reports Yet</h3>
+        <p>You haven't run any soil analyses yet. Enter your soil test parameters or upload a Soil Health Card to generate your first report.</p>
+        <div style="margin-top:var(--space-6);">
+          <a href="{{ url_for('analyzer') }}" class="btn btn-primary">
+            <i class="fa-solid fa-flask"></i> Analyze Soil Now
+          </a>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+{% endblock %}
+

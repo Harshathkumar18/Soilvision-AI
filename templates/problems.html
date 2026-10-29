@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% block title %}Soil Problems &amp; Scientific Solutions — SoilVision AI{% endblock %}
+
+{% block content %}
+<div style="background:var(--grad-hero);padding:var(--space-12) 0 var(--space-8);border-bottom:1px solid var(--clr-dark-border);">
+  <div class="container">
+    <div class="section-badge" style="margin-bottom:var(--space-4);"><i class="fa-solid fa-plant-wilt"></i> Diagnostic Directory</div>
+    <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:var(--space-3);">Soil Problems &amp; Scientific Solutions</h1>
+    <p class="text-muted" style="max-width:680px;">Identify the 9 critical soil degradation hazards affecting Indian agriculture. Understand visual warning signs, root-cause mechanisms, and apply verified sustainable agronomic remedies.</p>
+  </div>
+</div>
+
+<section class="section-pad">
+  <div class="container">
+
+    <!-- Filters & Search Toolbar -->
+    <div class="card" style="margin-bottom:var(--space-8);padding:var(--space-4) var(--space-6);">
+      <form method="GET" action="{{ url_for('problems') }}" style="display:flex;flex-wrap:wrap;gap:var(--space-4);align-items:center;justify-content:space-between;">
+        <!-- Category Filters -->
+        <div class="problems-filter" style="margin:0;">
+          <a href="{{ url_for('problems', category='all', q=search_query) }}" class="filter-btn {% if current_category == 'all' %}active{% endif %}">
+            All Hazards (9)
+          </a>
+          <a href="{{ url_for('problems', category='Physical', q=search_query) }}" class="filter-btn {% if current_category == 'Physical' %}active{% endif %}">
+            Physical
+          </a>
+          <a href="{{ url_for('problems', category='Chemical', q=search_query) }}" class="filter-btn {% if current_category == 'Chemical' %}active{% endif %}">
+            Chemical
+          </a>
+          <a href="{{ url_for('problems', category='Biological', q=search_query) }}" class="filter-btn {% if current_category == 'Biological' %}active{% endif %}">
+            Biological
+          </a>
+          <a href="{{ url_for('problems', category='Nutritional', q=search_query) }}" class="filter-btn {% if current_category == 'Nutritional' %}active{% endif %}">
+            Nutritional
+          </a>
+          <a href="{{ url_for('problems', category='Climatic', q=search_query) }}" class="filter-btn {% if current_category == 'Climatic' %}active{% endif %}">
+            Climatic
+          </a>
+        </div>
+
+        <!-- Search input -->
+        <div class="search-bar" style="width:280px;">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" name="q" value="{{ search_query }}" placeholder="Search symptoms, causes...">
+        </div>
+      </form>
+    </div>
+
+    <!-- Problems List -->
+    <div style="display:flex;flex-direction:column;gap:var(--space-6);">
+      {% if problems %}
+      {% for p in problems %}
+      <article class="problem-card card" id="{{ p.id }}" style="scroll-margin-top:100px;">
+        <div class="problem-card-header">
+          <div class="problem-icon problem-icon-{{ p.id }}">
+            <i class="{{ p.icon }}"></i>
+          </div>
+          <div class="problem-info">
+            <div style="display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-1);">
+              <h3 style="margin:0;">{{ p.name }}</h3>
+              <span class="badge {{ p.category_badge }}">{{ p.category }}</span>
+            </div>
+            <div style="font-size:0.8rem;color:var(--clr-text-faint);font-weight:600;">{{ p.telugu_name }}</div>
+          </div>
+          <i class="fa-solid fa-chevron-down problem-chevron"></i>
+        </div>
+
+        <div style="padding:0 var(--space-6) var(--space-4);">
+          <p style="font-size:0.92rem;color:var(--clr-text-muted);line-height:1.65;margin:0;">
+            {{ p.short_desc }}
+          </p>
+        </div>
+
+        <div class="problem-card-body">
+          <div class="grid grid-2" style="margin-top:var(--space-4);margin-bottom:var(--space-5);">
+            <!-- Causes -->
+            <div style="background:rgba(10,20,10,0.6);padding:var(--space-4);border-radius:var(--radius-md);border:1px solid var(--clr-dark-border);">
+              <div class="problem-section-title" style="color:#fbbf24;"><i class="fa-solid fa-circle-question"></i> Root Causes</div>
+              <ul class="problem-list">
+                {% for c in p.causes %}
+                <li>{{ c }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+
+            <!-- Warning Signs -->
+            <div style="background:rgba(10,20,10,0.6);padding:var(--space-4);border-radius:var(--radius-md);border:1px solid var(--clr-dark-border);">
+              <div class="problem-section-title" style="color:#f87171;"><i class="fa-solid fa-triangle-exclamation"></i> Visual Warning Signs</div>
+              <ul class="problem-list">
+                {% for w in p.warning_signs %}
+                <li>{{ w }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+
+          <!-- Crop Effects -->
+          <div style="background:rgba(10,20,10,0.6);padding:var(--space-4);border-radius:var(--radius-md);border:1px solid var(--clr-dark-border);margin-bottom:var(--space-5);">
+            <div class="problem-section-title" style="color:#fca5a5;"><i class="fa-solid fa-plant-wilt"></i> Impact on Crop Health &amp; Productivity</div>
+            <ul class="problem-list">
+              {% for eff in p.crop_effects %}
+              <li>{{ eff }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+
+          <!-- Prevention & Management -->
+          <div style="background:rgba(22,163,74,0.06);padding:var(--space-4);border-radius:var(--radius-md);border:1px solid rgba(22,163,74,0.2);margin-bottom:var(--space-5);">
+            <div class="problem-section-title" style="color:var(--clr-primary-light);"><i class="fa-solid fa-shield-halved"></i> Scientific Prevention &amp; Reclamation</div>
+            <ul class="problem-list">
+              {% for prev in p.prevention %}
+              <li>{{ prev }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+
+          <!-- Sustainable Tip & Advisory -->
+          <div class="rec-tip" style="margin-bottom:var(--space-3);">
+            <i class="fa-solid fa-leaf"></i>
+            <span><strong>Sustainable Agroforestry Tip:</strong> {{ p.sustainable_tips }}</span>
+          </div>
+
+          <div style="font-size:0.8rem;color:var(--clr-text-faint);display:flex;align-items:center;gap:var(--space-2);margin-top:var(--space-3);">
+            <i class="fa-solid fa-user-doctor" style="color:var(--clr-accent);"></i>
+            <span><strong>When to Seek Professional Lab Help:</strong> {{ p.when_to_seek_advice }}</span>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+      {% else %}
+      <div class="no-data">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <h3>No problems found</h3>
+        <p>No soil hazards matched your search criteria. Try a different search term or category filter.</p>
+        <div style="margin-top:var(--space-4);">
+          <a href="{{ url_for('problems') }}" class="btn btn-secondary btn-sm">Reset Filters</a>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,317 @@
+{% extends 'base.html' %}
+{% block title %}Educational Soil Explorer &amp; Quiz — SoilVision AI{% endblock %}
+
+{% block content %}
+<div style="background:var(--grad-hero);padding:var(--space-12) 0 var(--space-8);border-bottom:1px solid var(--clr-dark-border);">
+  <div class="container">
+    <div class="section-badge" style="margin-bottom:var(--space-4);"><i class="fa-solid fa-graduation-cap"></i> Soil Learning Center</div>
+    <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:var(--space-3);">Educational Soil Explorer &amp; Quiz</h1>
+    <p class="text-muted" style="max-width:680px;">Master the fundamentals of agricultural soil health — from pH and NPK balance to microbial biology, soil structure, water retention, and erosion defense. Test your knowledge with our interactive quiz.</p>
+  </div>
+</div>
+
+<section class="section-pad">
+  <div class="container">
+
+    <!-- ══════════════════════════════════════════════════════════
+         PART 1: EDUCATIONAL SOIL EXPLORER (8 ILLUSTRATED TOPICS)
+    ══════════════════════════════════════════════════════════ -->
+    <div class="section-header" style="text-align:left;margin-bottom:var(--space-8);">
+      <div class="section-badge"><i class="fa-solid fa-book-open"></i> Core Concepts</div>
+      <h2 style="font-size:1.6rem;">Soil Fundamentals Explorer</h2>
+      <p class="text-muted">Click any topic card to expand detailed scientific explanations and practical field insights.</p>
+    </div>
+
+    <div class="grid grid-2" style="margin-bottom:var(--space-16);">
+
+      <!-- 1. Soil pH & Acidity -->
+      <div class="edu-card card">
+        <div class="edu-card-header">
+          <div class="edu-card-icon" style="background:rgba(239,68,68,0.15);color:#f87171;">
+            <i class="fa-solid fa-scale-unbalanced"></i>
+          </div>
+          <h3>1. Soil pH, Acidity &amp; Alkalinity</h3>
+          <i class="fa-solid fa-chevron-down edu-toggle"></i>
+        </div>
+        <div class="edu-card-body">
+          <p><strong>What is pH?</strong> Soil reaction measures the concentration of hydrogen ions (H⁺) on a logarithmic scale from 0 to 14. 7.0 is neutral.</p>
+          <ul class="problem-list" style="margin-top:var(--space-3);">
+            <li><strong>Acidic (pH &lt; 5.5):</strong> High aluminum &amp; manganese toxicity. Fixes phosphorus so roots cannot absorb it. Treated with agricultural lime (CaCO₃).</li>
+            <li><strong>Ideal Range (6.5 – 7.5):</strong> Maximum availability of all 17 plant nutrients. Beneficial earthworms and bacteria thrive.</li>
+            <li><strong>Alkaline / Sodic (pH &gt; 8.5):</strong> High exchangeable sodium disperses clay, causing compaction and micronutrient lockout. Reclaimed using agricultural gypsum (CaSO₄).</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 2. Nitrogen, Phosphorus & Potassium (NPK) -->
+      <div class="edu-card card">
+        <div class="edu-card-header">
+          <div class="edu-card-icon" style="background:rgba(34,197,94,0.15);color:#4ade80;">
+            <i class="fa-solid fa-leaf"></i>
+          </div>
+          <h3>2. Macronutrients (N, P, K)</h3>
+          <i class="fa-solid fa-chevron-down edu-toggle"></i>
+        </div>
+        <div class="edu-card-body">
+          <p><strong>The Big Three:</strong> Crops need balanced amounts of Nitrogen, Phosphorus, and Potassium for healthy growth.</p>
+          <ul class="problem-list" style="margin-top:var(--space-3);">
+            <li><strong>Nitrogen (N):</strong> Powers green vegetative growth and chlorophyll synthesis. Deficiency causes pale yellowing of older leaves. Split applications avoid leaching.</li>
+            <li><strong>Phosphorus (P):</strong> Drives deep root establishment, early energy transfer, and flower/seed setting. Low mobility requires basal placement near seed depth.</li>
+            <li><strong>Potassium (K):</strong> Regulates leaf stomatal opening, strengthens cell walls against disease, and builds drought and frost resistance.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 3. Soil Texture & Structure -->
+      <div class="edu-card card">
+        <div class="edu-card-header">
+          <div class="edu-card-icon" style="background:rgba(245,158,11,0.15);color:#fbbf24;">
+            <i class="fa-solid fa-cubes-stacked"></i>
+          </div>
+          <h3>3. Soil Texture &amp; Structure</h3>
+          <i class="fa-solid fa-chevron-down edu-toggle"></i>
+        </div>
+        <div class="edu-card-body">
+          <p><strong>Sand, Silt &amp; Clay:</strong> Texture is the permanent ratio of mineral particle sizes. Structure is how those particles aggregate together into crumbs or blocks.</p>
+          <ul class="problem-list" style="margin-top:var(--space-3);">
+            <li><strong>Sandy Soils:</strong> Large pores, excellent drainage and aeration, but low nutrient and water retention capacity.</li>
+            <li><strong>Clay Soils:</strong> Tiny particles with high cation exchange capacity (CEC), but prone to waterlogging, compaction, and cracking.</li>
+            <li><strong>Loam Soils:</strong> The agronomic sweet spot — balanced mixture offering both aeration and moisture-nutrient holding capacity.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 4. Beneficial Microorganisms -->
+      <div class="edu-card card">
+        <div class="edu-card-header">
+          <div class="edu-card-icon" style="background:rgba(16,185,129,0.15);color:#34d399;">
+            <i class="fa-solid fa-bacterium"></i>
+          </div>
+          <h3>4. Beneficial Microorganisms</h3>
+          <i class="fa-solid fa-chevron-down edu-toggle"></i>
+        </div>
+        <div class="edu-card-body">
+          <p><strong>The Living Underground Workforce:</strong> A single teaspoon of healthy soil contains more living microorganisms than there are humans on Earth.</p>
+          <ul class="problem-list" style="margin-top:var(--space-3);">
+            <li><strong>Rhizobium Bacteria:</strong> Form symbiotic root nodules on legumes, capturing atmospheric nitrogen and delivering it to the plant for free.</li>
+            <li><strong>Mycorrhizal Fungi (VAM):</strong> Hyphal networks extend root surface area by up to 300%, extracting locked phosphorus and moisture.</li>
+            <li><strong>Phosphate Solubilizing Bacteria (PSB):</strong> Exude organic acids that dissolve insoluble rock phosphates into plant-available orthophosphate.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 5. Organic Matter & Compost -->
+      <div class="edu-card card">
+        <div class="edu-card-header">
+          <div class="edu-card-icon" style="background:rgba(146,64,14,0.2);color:#fb923c;">
+            <i class="fa-solid fa-recycle"></i>
+          </div>
+          <h3>5. Organic Matter &amp; Compost</h3>
+          <i class="fa-solid fa-chevron-down edu-toggle"></i>
+        </div>
+        <div class="edu-card-body">
+          <p><strong>Soil Humus: The Dark Gold:</strong> Soil Organic Carbon (SOC) is the single most reliable indicator of biological vitality and resilience.</p>
+          <ul class="problem-list" style="margin-top:var(--space-3);">
+            <li><strong>Humus Sponge:</strong> 1% increase in soil organic matter holds approximately 170,000 liters of additional water per hectare.</li>
+            <li><strong>Green Manuring:</strong> Growing Dhaincha or Sunn hemp for 45 days and ploughing it under adds up to 25 tonnes of green biomass and 80 kg N/ha.</li>
+            <li><strong>Residue Recycling:</strong> Incorporating crop stubble instead of burning prevents carbon loss and enriches soil microbiology.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 6. Water Retention & Drainage -->
+      <div class="edu-card card">
+        <div class="edu-card-header">
+          <div class="edu-card-icon" style="background:rgba(59,130,246,0.15);color:#60a5fa;">
+            <i class="fa-solid fa-droplet"></i>
+          </div>
+          <h3>6. Water Retention &amp; Drainage</h3>
+          <i class="fa-solid fa-chevron-down edu-toggle"></i>
+        </div>
+        <div class="edu-card-body">
+          <p><strong>Water Dynamics:</strong> Healthy soil acts as a porous sponge that absorbs heavy rains without ponding, yet holds moisture during dry spells.</p>
+          <ul class="problem-list" style="margin-top:var(--space-3);">
+            <li><strong>Field Capacity:</strong> The amount of moisture retained after excess gravitational water drains away. Ideal root zone moisture is 35–65%.</li>
+            <li><strong>Waterlogging Danger:</strong> When pores stay filled with water for &gt;48 hours, roots suffocate from lack of oxygen, triggering root rot fungi.</li>
+            <li><strong>Mulching Magic:</strong> Covering crop beds with organic straw cuts evaporation by up to 60% and cools summer root zones.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 7. Soil Erosion (Wind & Water) -->
+      <div class="edu-card card">
+        <div class="edu-card-header">
+          <div class="edu-card-icon" style="background:rgba(239,68,68,0.15);color:#fca5a5;">
+            <i class="fa-solid fa-wind"></i>
+          </div>
+          <h3>7. Soil Erosion Hazards</h3>
+          <i class="fa-solid fa-chevron-down edu-toggle"></i>
+        </div>
+        <div class="edu-card-body">
+          <p><strong>Topsoil Loss:</strong> It takes 500 to 1,000 years for nature to form 2.5 cm of fertile topsoil, but a single severe storm can wash it away in hours.</p>
+          <ul class="problem-list" style="margin-top:var(--space-3);">
+            <li><strong>Splash &amp; Sheet Erosion:</strong> Raindrop kinetic energy detaches fine soil particles, washing away the organic-rich surface sheet invisibly.</li>
+            <li><strong>Rills &amp; Gullies:</strong> Concentrated runoff cuts channels across slopes, eroding farmable acreage and draining local water tables.</li>
+            <li><strong>Wind Erosion:</strong> Bare, dry soils in arid zones lose fertile clay and silt as dust clouds during dry pre-monsoon winds.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 8. Soil Conservation Practices -->
+      <div class="edu-card card">
+        <div class="edu-card-header">
+          <div class="edu-card-icon" style="background:rgba(22,163,74,0.18);color:#22c55e;">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <h3>8. Soil Conservation Practices</h3>
+          <i class="fa-solid fa-chevron-down edu-toggle"></i>
+        </div>
+        <div class="edu-card-body">
+          <p><strong>Proven Defense Strategies:</strong> Modern conservation agriculture combines physical engineering with biological protective covers.</p>
+          <ul class="problem-list" style="margin-top:var(--space-3);">
+            <li><strong>Contour Bunding &amp; Terracing:</strong> Sowing across the slope on equal elevation lines halts runoff velocity and forces rainwater to soak in.</li>
+            <li><strong>Vetiver Vegetative Barriers:</strong> Dense deep-rooted vetiver grass hedges filter sediment runoff and stabilize field borders permanently.</li>
+            <li><strong>Minimum / Zero Tillage:</strong> Retaining stubble on the soil surface protects soil aggregates from raindrop impact and preserves earthworm burrows.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         PART 2: INTERACTIVE SOIL HEALTH CHALLENGE (QUIZ)
+    ══════════════════════════════════════════════════════════ -->
+    <div class="section-header" style="text-align:left;margin-bottom:var(--space-6);">
+      <div class="section-badge"><i class="fa-solid fa-award"></i> Knowledge Challenge</div>
+      <h2 style="font-size:1.6rem;">Interactive Soil-Health Quiz</h2>
+      <p class="text-muted">Test your agronomic understanding with instant feedback, scientific explanations, and a community leaderboard.</p>
+    </div>
+
+    <!-- Quiz Setup Toolbar -->
+    <div class="card" style="margin-bottom:var(--space-6);padding:var(--space-4) var(--space-6);">
+      <div class="flex-between" style="flex-wrap:wrap;gap:var(--space-4);">
+        <div style="display:flex;align-items:center;gap:var(--space-3);">
+          <label class="form-label" style="margin:0;"><i class="fa-solid fa-user"></i> Player Name:</label>
+          <input type="text" id="quizPlayerName" class="form-input" placeholder="Your Name" style="width:200px;padding:0.4rem 0.8rem;font-size:0.875rem;">
+        </div>
+        <div style="display:flex;align-items:center;gap:var(--space-2);">
+          <span class="text-xs text-faint" style="text-transform:uppercase;letter-spacing:0.06em;font-weight:700;">Difficulty:</span>
+          <button type="button" class="btn btn-primary btn-sm btn-diff-select active" data-difficulty="beginner">
+            🌱 Beginner
+          </button>
+          <button type="button" class="btn btn-ghost btn-sm btn-diff-select" data-difficulty="advanced">
+            🔬 Advanced
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quiz Card -->
+    <div class="quiz-card" id="quizContainer">
+      <!-- Loading State -->
+      <div id="quizLoading" class="scan-animation" style="padding:var(--space-12);">
+        <div class="scan-circle"></div>
+        <span>Loading questions...</span>
+      </div>
+
+      <!-- Active Question -->
+      <div id="quizQuestionCard" style="display:none;">
+        <div class="flex-between" style="margin-bottom:var(--space-3);">
+          <span class="quiz-question-num" id="quizProgressText">Question 1 of 5</span>
+          <span class="badge badge-info" id="quizDiffBadge">Beginner</span>
+        </div>
+        <div class="quiz-progress-bar">
+          <div class="quiz-progress-fill" id="quizProgressBar" style="width:0%;"></div>
+        </div>
+
+        <h3 class="quiz-question-text" id="quizQuestionText"></h3>
+        <div class="quiz-options" id="quizOptionsContainer"></div>
+
+        <!-- Instant Explanation -->
+        <div class="quiz-explanation" id="quizExplanationBox">
+          <div style="display:flex;align-items:flex-start;gap:var(--space-2);">
+            <i class="fa-solid fa-circle-info" style="color:#60a5fa;margin-top:2px;"></i>
+            <span id="quizExplanationText"></span>
+          </div>
+        </div>
+
+        <div style="margin-top:var(--space-6);display:flex;justify-content:flex-end;">
+          <button type="button" class="btn btn-primary" id="quizNextBtn" disabled>
+            Next Question &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- Results View -->
+      <div id="quizResultsCard" class="quiz-result-card" style="display:none;">
+        <div class="quiz-score-circle">
+          <span class="quiz-score-pct" id="quizScorePct">0%</span>
+          <span class="quiz-score-label">Final Score</span>
+        </div>
+        <h2 id="quizResultTitle" style="margin-bottom:var(--space-2);">Quiz Complete!</h2>
+        <p class="text-muted text-sm" id="quizResultMsg" style="max-width:480px;margin:0 auto var(--space-6);"></p>
+
+        <div style="display:flex;gap:var(--space-3);justify-content:center;margin-bottom:var(--space-8);">
+          <button type="button" class="btn btn-primary btn-sm" id="quizRestartBtn">
+            <i class="fa-solid fa-rotate-left"></i> Try Again
+          </button>
+          <a href="{{ url_for('analyzer') }}" class="btn btn-secondary btn-sm">
+            <i class="fa-solid fa-flask"></i> Analyze Your Soil
+          </a>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="card" style="max-width:540px;margin:0 auto;text-align:left;">
+          <h4 style="margin-bottom:var(--space-4);font-size:0.95rem;"><i class="fa-solid fa-trophy" style="color:#fbbf24;"></i> Top Soil Champions</h4>
+          <div id="leaderboardContainer">
+            {% for entry in leaderboard %}
+            <div class="leaderboard-row">
+              <div class="lb-rank {% if loop.index == 1 %}gold{% elif loop.index == 2 %}silver{% elif loop.index == 3 %}bronze{% else %}other{% endif %}">
+                {{ loop.index }}
+              </div>
+              <div class="lb-name">{{ entry.player_name }}</div>
+              <span class="badge badge-info" style="font-size:0.65rem;">{{ entry.difficulty }}</span>
+              <div class="lb-score">{{ entry.score }}/{{ entry.total_questions }} ({{ entry.percentage }}%)</div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         PART 3: HANDS-ON FIELD EXPERIMENTS
+    ══════════════════════════════════════════════════════════ -->
+    <div style="margin-top:var(--space-16);">
+      <div class="section-header" style="text-align:left;margin-bottom:var(--space-8);">
+        <div class="section-badge"><i class="fa-solid fa-flask-vial"></i> Practical Farm Science</div>
+        <h2 style="font-size:1.6rem;">Hands-on Field Experiments</h2>
+        <p class="text-muted">Simple, zero-cost soil testing procedures that farmers and students can perform directly in the field.</p>
+      </div>
+
+      <div class="grid grid-3 grid-auto">
+        {% for act in activities %}
+        <div class="card card-glow">
+          <div class="feature-icon" style="margin-bottom:var(--space-4);">
+            <i class="fa-solid fa-seedling"></i>
+          </div>
+          <h3 style="font-size:1rem;margin-bottom:var(--space-2);">{{ act.title }}</h3>
+          <p class="text-xs text-faint" style="margin-bottom:var(--space-4);">{{ act.subtitle }}</p>
+          <ol style="padding-left:1.2rem;font-size:0.82rem;color:var(--clr-text-muted);display:flex;flex-direction:column;gap:var(--space-2);">
+            {% for step in act.steps %}
+            <li>{{ step }}</li>
+            {% endfor %}
+          </ol>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/quiz.js') }}"></script>
+{% endblock %}

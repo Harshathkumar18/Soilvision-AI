@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% block title %}Upload Soil Report{% endblock %}
+{% block content %}
+
+<div style="background:var(--grad-hero);padding:var(--space-12) 0 var(--space-8);border-bottom:1px solid var(--clr-dark-border);">
+  <div class="container">
+    <div class="section-badge" style="margin-bottom:var(--space-4);"><i class="fa-solid fa-file-arrow-up"></i> Report Upload</div>
+    <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:var(--space-3);">Upload Soil Test Report</h1>
+    <p class="text-muted" style="max-width:620px;">Upload your physical Soil Health Card or laboratory report as a PDF, JPG, or PNG. Parameters are extracted automatically and pre-filled for your review before analysis.</p>
+  </div>
+</div>
+
+<section class="section-pad">
+  <div class="container container-md">
+
+    <!-- Step 1: Upload -->
+    <div id="step1" class="card" style="margin-bottom:var(--space-6);">
+      <h3 style="margin-bottom:var(--space-2);">Step 1 — Select or Drop Your Report</h3>
+      <p class="text-sm text-muted" style="margin-bottom:var(--space-6);">Supported formats: PDF (digital or scanned), JPG, PNG. Maximum file size: 10 MB.</p>
+
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" id="reportFileInput" accept=".pdf,.jpg,.jpeg,.png">
+        <div class="upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+        <div class="upload-title">Drop file here or click to browse</div>
+        <div class="upload-subtitle">Works best with clear, well-lit, un-rotated photos of Soil Health Cards</div>
+        <div class="upload-formats">
+          <span class="format-tag"><i class="fa-solid fa-file-pdf"></i> PDF</span>
+          <span class="format-tag"><i class="fa-solid fa-file-image"></i> JPG</span>
+          <span class="format-tag"><i class="fa-solid fa-file-image"></i> PNG</span>
+          <span class="format-tag">Max 10 MB</span>
+        </div>
+      </div>
+
+      <!-- Upload progress -->
+      <div id="uploadProgress" style="display:none;margin-top:var(--space-5);">
+        <div class="scan-animation active" style="padding:var(--space-8);">
+          <div class="scan-circle"></div>
+          <strong>Processing Report…</strong>
+          <span class="text-sm text-faint">Extracting soil parameters using text parsing</span>
+        </div>
+      </div>
+
+      <!-- Error display -->
+      <div id="uploadError" class="alert alert-danger" style="display:none;margin-top:var(--space-4);"></div>
+    </div>
+
+    <!-- Step 2: Review extracted values -->
+    <div id="step2" style="display:none;">
+      <div class="card" style="margin-bottom:var(--space-6);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-5);">
+          <h3 style="margin-bottom:0;">Step 2 — Review Extracted Parameters</h3>
+          <span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> Extraction Complete</span>
+        </div>
+        <p class="text-sm text-muted" style="margin-bottom:var(--space-5);">
+          The following values were extracted from your report. Please verify and correct any inaccurate values before proceeding to analysis. Values shown with an asterisk (*) were <strong>not found</strong> and are left blank.
+        </p>
+
+        <div class="data-disclaimer" style="margin-bottom:var(--space-5);">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>All extracted values are estimates from text recognition. Always verify against the original printed report.</span>
+        </div>
+
+        <form id="extractedForm">
+          <p class="form-section-title"><i class="fa-solid fa-user"></i> Farm Information</p>
+          <div class="form-grid-2" style="margin-bottom:var(--space-5);">
+            <div class="form-group">
+              <label class="form-label">Farmer / Farm Name</label>
+              <input type="text" name="farmer_name" id="ext_farmer_name" class="form-input" placeholder="Not detected">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Crop</label>
+              <input type="text" name="target_crop" id="ext_target_crop" class="form-input" placeholder="Not detected">
+            </div>
+          </div>
+
+          <p class="form-section-title"><i class="fa-solid fa-vial"></i> Core Soil Parameters</p>
+          <div class="form-grid-3" style="margin-bottom:var(--space-5);">
+            <div class="form-group">
+              <label class="form-label">pH</label>
+              <input type="number" name="ph" id="ext_ph" class="form-input" placeholder="*" step="0.1" min="0" max="14">
+            </div>
+            <div class="form-group">
+              <label class="form-label">EC (dS/m)</label>
+              <input type="number" name="ec" id="ext_ec" class="form-input" placeholder="*" step="0.01" min="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Organic Carbon (%)</label>
+              <input type="number" name="oc" id="ext_oc" class="form-input" placeholder="*" step="0.01" min="0">
+            </div>
+          </div>
+
+          <p class="form-section-title"><i class="fa-solid fa-leaf"></i> Macronutrients (NPK)</p>
+          <div class="form-grid-3" style="margin-bottom:var(--space-5);">
+            <div class="form-group">
+              <label class="form-label">Nitrogen N (kg/ha)</label>
+              <input type="number" name="nitrogen" id="ext_nitrogen" class="form-input" placeholder="*" step="1" min="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phosphorus P (kg/ha)</label>
+              <input type="number" name="phosphorus" id="ext_phosphorus" class="form-input" placeholder="*" step="0.1" min="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Potassium K (kg/ha)</label>
+              <input type="number" name="potassium" id="ext_potassium" class="form-input" placeholder="*" step="1" min="0">
+            </div>
+          </div>
+
+          <p class="form-section-title"><i class="fa-solid fa-microchip"></i> Micronutrients</p>
+          <div class="form-grid-3" style="margin-bottom:var(--space-6);">
+            <div class="form-group">
+              <label class="form-label">Zinc (ppm)</label>
+              <input type="number" name="zinc" id="ext_zinc" class="form-input" placeholder="*" step="0.01" min="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Iron (ppm)</label>
+              <input type="number" name="iron" id="ext_iron" class="form-input" placeholder="*" step="0.1" min="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Boron (ppm)</label>
+              <input type="number" name="boron" id="ext_boron" class="form-input" placeholder="*" step="0.01" min="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Sulphur (ppm)</label>
+              <input type="number" name="sulphur" id="ext_sulphur" class="form-input" placeholder="*" step="0.1" min="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Copper (ppm)</label>
+              <input type="number" name="copper" id="ext_copper" class="form-input" placeholder="*" step="0.01" min="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Manganese (ppm)</label>
+              <input type="number" name="manganese" id="ext_manganese" class="form-input" placeholder="*" step="0.01" min="0">
+            </div>
+          </div>
+
+          <div style="display:flex;gap:var(--space-4);flex-wrap:wrap;">
+            <button type="submit" class="btn btn-primary btn-lg">
+              <i class="fa-solid fa-flask"></i> Analyze These Values
+            </button>
+            <button type="button" class="btn btn-ghost" id="resetUploadBtn">
+              <i class="fa-solid fa-rotate-left"></i> Upload Different File
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Analysis results in-page -->
+      <div id="uploadAnalysisResult" style="display:none;"></div>
+    </div>
+
+    <!-- Tips -->
+    <div class="card" id="uploadTips" style="margin-top:var(--space-6);">
+      <h4 style="margin-bottom:var(--space-4);"><i class="fa-solid fa-lightbulb" style="color:var(--clr-accent);"></i> Tips for Best Results</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+        <div class="strength-item"><i class="fa-solid fa-circle-check"></i> Use a flat, well-lit surface when photographing paper reports</div>
+        <div class="strength-item"><i class="fa-solid fa-circle-check"></i> Ensure all text is readable and not blurred</div>
+        <div class="strength-item"><i class="fa-solid fa-circle-check"></i> Digital PDF reports extract more accurately than scanned images</div>
+        <div class="strength-item"><i class="fa-solid fa-circle-check"></i> ICAR Soil Health Cards are best supported</div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+{% endblock %}

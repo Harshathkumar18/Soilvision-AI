@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}Interactive Soil Map — SoilVision AI{% endblock %}
+{% block content %}
+
+<div style="background:var(--grad-hero);padding:var(--space-12) 0 var(--space-8);border-bottom:1px solid var(--clr-dark-border);">
+  <div class="container">
+    <div class="section-badge" style="margin-bottom:var(--space-4);"><i class="fa-solid fa-map"></i> Soil Map of India</div>
+    <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:var(--space-3);">Interactive Agro-Ecological Soil Map</h1>
+    <p class="text-muted" style="max-width:700px;">Explore India's 7 major agro-ecological soil zones based on ICAR &amp; NBSS&amp;LUP datasets. Drop a pin on your farm location to save coordinates, view regional soil characteristics, and attach soil health records.</p>
+    <div class="data-disclaimer" style="margin-top:var(--space-5);max-width:720px;">
+      <i class="fa-solid fa-circle-info"></i>
+      <span><strong>Verified Geospatial Grounding:</strong> Displays official ICAR agro-ecological regional mapping. It does not display simulated or unverified real-time satellite data.</span>
+    </div>
+  </div>
+</div>
+
+<section class="section-pad">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 340px;gap:var(--space-8);align-items:start;">
+
+      <!-- MAP COLUMN -->
+      <div>
+        <div class="map-wrapper" style="margin-bottom:var(--space-4);">
+          <div id="soilMap"></div>
+        </div>
+
+        <div class="data-disclaimer" style="margin-bottom:var(--space-5);">
+          <i class="fa-solid fa-location-crosshairs"></i>
+          <span>Click anywhere on the map to pin a farm location, view coordinates, or save it to your profile.</span>
+        </div>
+
+        <!-- Selected Location & Save Form -->
+        <div id="selectedLocationCard" class="card" style="margin-top:var(--space-4);display:none;">
+          <h4 style="margin-bottom:var(--space-3);"><i class="fa-solid fa-location-dot" style="color:var(--clr-primary-light);"></i> Selected Farm Coordinates</h4>
+          <div id="selectedLocationInfo"></div>
+
+          <!-- Save Farm Location Form -->
+          <form id="saveLocationForm" style="margin-top:var(--space-4);border-top:1px solid var(--clr-dark-border);padding-top:var(--space-4);">
+            <input type="hidden" id="locLat" name="latitude">
+            <input type="hidden" id="locLng" name="longitude">
+
+            <div class="form-grid-2" style="margin-bottom:var(--space-3);">
+              <div class="form-group">
+                <label class="form-label">Farm / Plot Name <span class="required">*</span></label>
+                <input type="text" id="locName" name="farm_name" class="form-input" placeholder="e.g. North Acre Wheat Field" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Soil Type / Notes</label>
+                <input type="text" id="locNotes" name="notes" class="form-input" placeholder="e.g. Red Loam, near river canal">
+              </div>
+            </div>
+
+            <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;">
+              <button type="submit" class="btn btn-primary btn-sm" id="btnSaveLoc">
+                <i class="fa-solid fa-bookmark"></i> Save Farm Location
+              </button>
+              <a href="/analyzer" class="btn btn-secondary btn-sm" id="analyzeLocationBtn">
+                <i class="fa-solid fa-flask"></i> Analyze This Location
+              </a>
+              <button type="button" class="btn btn-ghost btn-sm" id="clearLocationBtn">
+                <i class="fa-solid fa-xmark"></i> Clear Pin
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Saved Locations List Card -->
+        <div class="card" id="savedLocationsSection" style="margin-top:var(--space-6);">
+          <h4 style="margin-bottom:var(--space-4);font-size:1rem;"><i class="fa-solid fa-map-pin" style="color:var(--clr-primary-light);"></i> Saved Farm Locations (<span id="savedLocCount">0</span>)</h4>
+          <div id="savedLocationsList">
+            <div class="text-sm text-muted">No saved farm locations yet. Click anywhere on the map to pin and save your fields.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <div>
+        <div class="map-info-card">
+          <h3 style="font-size:1rem;margin-bottom:var(--space-4);"><i class="fa-solid fa-layer-group" style="color:var(--clr-primary-light);"></i> Agro-Ecological Zones</h3>
+          <div class="zone-list" id="zoneList">
+            <div class="text-sm text-muted" style="text-align:center;padding:var(--space-4);">
+              <i class="fa-solid fa-spinner fa-spin"></i> Loading zones...
+            </div>
+          </div>
+        </div>
+
+        <!-- Zone Detail Card -->
+        <div id="zoneDetailCard" class="card" style="margin-top:var(--space-5);display:none;">
+          <h4 id="zoneDetailName" style="margin-bottom:var(--space-4);font-size:0.95rem;"></h4>
+          <div id="zoneDetailContent"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+{% endblock %}

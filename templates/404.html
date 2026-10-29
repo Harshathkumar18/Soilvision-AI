@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Page Not Found (404) — SoilVision AI{% endblock %}
+
+{% block content %}
+<div class="container" style="padding:var(--space-20) var(--space-4);text-align:center;">
+  <div style="width:90px;height:90px;border-radius:50%;background:rgba(22,163,74,0.12);color:var(--clr-primary-light);display:flex;align-items:center;justify-content:center;font-size:2.8rem;margin:0 auto var(--space-6);box-shadow:var(--shadow-glow-sm);">
+    <i class="fa-solid fa-wheat-awn-circle-exclamation"></i>
+  </div>
+  <h1 style="font-size:clamp(2rem,5vw,3rem);margin-bottom:var(--space-3);">Page Not Found (404)</h1>
+  <p class="text-muted" style="max-width:520px;margin:0 auto var(--space-8);font-size:1.05rem;">
+    The soil report, map coordinates, or page you are looking for has been moved or does not exist. Let's get you back to cultivating healthy soil.
+  </p>
+  <div style="display:flex;justify-content:center;gap:var(--space-4);flex-wrap:wrap;">
+    <a href="{{ url_for('home') }}" class="btn btn-primary btn-lg">
+      <i class="fa-solid fa-house"></i> Return Home
+    </a>
+    <a href="{{ url_for('analyzer') }}" class="btn btn-secondary btn-lg">
+      <i class="fa-solid fa-microscope"></i> Soil Health Analyzer
+    </a>
+  </div>
+</div>
+{% endblock %}

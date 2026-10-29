@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soil Health Card #{{ record.id }} | SoilVision AI</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- SoilVision AI Design System -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <style>
+    body {
+      background: var(--clr-dark);
+      padding: var(--space-8) var(--space-4);
+      min-height: 100vh;
+    }
+    .report-sheet {
+      max-width: 960px;
+      margin: 0 auto;
+      background: var(--grad-card);
+      border: 1px solid var(--clr-dark-border2);
+      border-radius: var(--radius-xl);
+      padding: var(--space-10);
+      box-shadow: var(--shadow-lg), var(--shadow-glow-sm);
+      position: relative;
+    }
+    .report-watermark {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) rotate(-30deg);
+      font-size: 8rem;
+      font-weight: 900;
+      color: rgba(22,163,74,0.03);
+      pointer-events: none;
+      white-space: nowrap;
+      user-select: none;
+    }
+    @media print {
+      body { background: #fff !important; color: #111 !important; padding: 0 !important; }
+      .report-sheet { border: 1px solid #333 !important; box-shadow: none !important; background: #fff !important; color: #111 !important; padding: 2rem !important; }
+      .btn-no-print { display: none !important; }
+      h1, h2, h3, h4, p, span, strong { color: #111 !important; }
+      .report-param-item { background: #f8f9fa !important; border: 1px solid #ddd !important; }
+      .report-param-value { color: #000 !important; }
+      .rec-card { background: #f8f9fa !important; border: 1px solid #ddd !important; }
+      .badge { border: 1px solid #333 !important; color: #000 !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Print and Navigation Bar -->
+  <div class="btn-no-print" style="max-width:960px;margin:0 auto var(--space-6);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--space-4);">
+    <a href="{{ url_for('analyzer') }}" class="btn btn-ghost btn-sm">
+      <i class="fa-solid fa-arrow-left"></i> Return to Soil Analyzer
+    </a>
+    <div style="display:flex;gap:var(--space-3);">
+      <a href="{{ url_for('my_reports') }}" class="btn btn-secondary btn-sm">
+        <i class="fa-solid fa-folder-open"></i> All Reports
+      </a>
+      <button type="button" class="btn btn-primary btn-sm" onclick="window.print()">
+        <i class="fa-solid fa-print"></i> Print / Download PDF
+      </button>
+    </div>
+  </div>
+
+  <!-- Soil Health Card Sheet -->
+  <div class="report-sheet">
+    <div class="report-watermark">SOILVISION AI</div>
+
+    <!-- Official Header -->
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--clr-dark-border2);padding-bottom:var(--space-6);margin-bottom:var(--space-8);flex-wrap:wrap;gap:var(--space-4);">
+      <div>
+        <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-2);">
+          <div class="brand-icon-box" style="width:34px;height:34px;font-size:0.95rem;">
+            <i class="fa-solid fa-seedling"></i>
+          </div>
+          <span style="font-family:var(--font-display);font-size:1.4rem;font-weight:800;color:var(--clr-text);">SoilVision AI</span>
+        </div>
+        <h1 style="font-size:1.5rem;color:var(--clr-primary-light);margin-bottom:2px;">Official Soil Health Card</h1>
+        <p class="text-xs text-muted" style="margin:0;">ICAR-Standard Scientific Diagnostic Report &amp; Crop Recommendation</p>
+      </div>
+      <div style="text-align:right;">
+        <span class="badge badge-success" style="font-size:0.82rem;padding:4px 12px;">Card #SV-{{ "%05d"|format(record.id) }}</span>
+        <div class="text-xs text-muted" style="margin-top:var(--space-2);">Date: <strong>{{ record.created_at[:10] if record.created_at else 'Active' }}</strong></div>
+        <div class="text-xs text-faint">Standard: ICAR / NBSS&amp;LUP</div>
+      </div>
+    </div>
+
+    <!-- Farm Meta Box -->
+    <div class="grid grid-4 grid-auto" style="background:rgba(10,20,10,0.6);border:1px solid var(--clr-dark-border);border-radius:var(--radius-lg);padding:var(--space-5);margin-bottom:var(--space-8);">
+      <div>
+        <div class="text-xs text-faint" style="text-transform:uppercase;letter-spacing:0.06em;">Farmer / Farm</div>
+        <strong style="font-size:1.05rem;color:var(--clr-text);">{{ record.farmer_name or 'Farmer' }}</strong>
+      </div>
+      <div>
+        <div class="text-xs text-faint" style="text-transform:uppercase;letter-spacing:0.06em;">Target Crop</div>
+        <strong style="font-size:1.05rem;color:var(--clr-primary-light);">{{ record.target_crop or 'General Farming' }}</strong>
+      </div>
+      <div>
+        <div class="text-xs text-faint" style="text-transform:uppercase;letter-spacing:0.06em;">Location</div>
+        <strong style="font-size:0.95rem;color:var(--clr-text);">
+          {% if record.district or record.state %}
+            {{ record.district }}{% if record.district and record.state %}, {% endif %}{{ record.state }}
+          {% else %}
+            India
+          {% endif %}
+        </strong>
+      </div>
+      <div>
+        <div class="text-xs text-faint" style="text-transform:uppercase;letter-spacing:0.06em;">Soil Classification</div>
+        <strong style="font-size:0.95rem;color:var(--clr-text);">{{ record.soil_type or 'General Agro-zone' }}</strong>
+      </div>
+    </div>
+
+    <!-- Health Score & Condition Overview -->
+    <div class="card" style="margin-bottom:var(--space-8);padding:var(--space-6);display:grid;grid-template-columns:160px 1fr;gap:var(--space-8);align-items:center;">
+      <div style="text-align:center;">
+        <div style="font-family:var(--font-display);font-size:3.2rem;font-weight:900;color:var(--clr-primary-light);line-height:1;">
+          {{ analysis.health_index if analysis.health_index is not none else '—' }}
+        </div>
+        <div class="text-xs text-muted" style="margin-top:2px;">/ 100 HEALTH INDEX</div>
+      </div>
+      <div>
+        <h2 style="font-size:1.25rem;margin-bottom:var(--space-1);">
+          Soil Condition:
+          <span style="color:{% if analysis.health_index and analysis.health_index >= 75 %}#4ade80{% elif analysis.health_index and analysis.health_index >= 55 %}#86efac{% elif analysis.health_index and analysis.health_index >= 35 %}#fbbf24{% else %}#f87171{% endif %};">
+            {% if analysis.health_index and analysis.health_index >= 75 %}Excellent{% elif analysis.health_index and analysis.health_index >= 55 %}Good{% elif analysis.health_index and analysis.health_index >= 35 %}Fair{% else %}Poor / Critical{% endif %}
+          </span>
+        </h2>
+        <p class="text-sm text-muted" style="margin:0;">
+          {% if analysis.health_index and analysis.health_index >= 75 %}
+            Soil exhibits balanced nutrient availability and near-optimal reaction. Focus on regular organic matter maintenance.
+          {% elif analysis.health_index and analysis.health_index >= 55 %}
+            Satisfactory baseline fertility with specific nutrient or pH imbalances that can be corrected with targeted amendments.
+          {% elif analysis.health_index and analysis.health_index >= 35 %}
+            Soil health is compromised by significant deficiencies or adverse pH/salinity. Corrective actions required before sowing.
+          {% else %}
+            Critical degradation hazards identified. Immediate soil reclamation with gypsum, lime, or heavy organic green manuring advised.
+          {% endif %}
+        </p>
+      </div>
+    </div>
+
+    <!-- Measured Parameters Grid -->
+    <h3 style="font-size:1.1rem;margin-bottom:var(--space-4);"><i class="fa-solid fa-vial" style="color:var(--clr-primary-light);"></i> Laboratory Measured Parameters</h3>
+    <div class="report-param-grid" style="margin-bottom:var(--space-8);">
+
+      <!-- pH -->
+      <div class="report-param-item">
+        <div class="report-param-label">Soil pH (Reaction)</div>
+        <div class="report-param-value">{{ record.ph if record.ph is not none else '—' }}</div>
+        <div class="report-param-unit">
+          {% if analysis.ratings.ph %}
+            <span class="badge badge-{{ analysis.ratings.ph.badge }}">{{ analysis.ratings.ph.rating }}</span>
+          {% else %}
+            <span class="text-faint">Unmeasured</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- EC -->
+      <div class="report-param-item">
+        <div class="report-param-label">Electrical Conductivity</div>
+        <div class="report-param-value">{{ record.ec if record.ec is not none else '—' }}</div>
+        <div class="report-param-unit">
+          {% if analysis.ratings.ec %}
+            <span class="badge badge-{{ analysis.ratings.ec.badge }}">{{ analysis.ratings.ec.rating }} (dS/m)</span>
+          {% else %}
+            <span class="text-faint">Unmeasured</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Organic Carbon -->
+      <div class="report-param-item">
+        <div class="report-param-label">Organic Carbon (OC)</div>
+        <div class="report-param-value">{{ record.oc if record.oc is not none else '—' }}{% if record.oc is not none %}%{% endif %}</div>
+        <div class="report-param-unit">
+          {% if analysis.ratings.oc %}
+            <span class="badge badge-{{ analysis.ratings.oc.badge }}">{{ analysis.ratings.oc.rating }}</span>
+          {% else %}
+            <span class="text-faint">Unmeasured</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Nitrogen -->
+      <div class="report-param-item">
+        <div class="report-param-label">Available Nitrogen (N)</div>
+        <div class="report-param-value">{{ record.nitrogen if record.nitrogen is not none else '—' }}</div>
+        <div class="report-param-unit">
+          {% if analysis.ratings.nitrogen %}
+            <span class="badge badge-{{ analysis.ratings.nitrogen.badge }}">{{ analysis.ratings.nitrogen.rating }} (kg/ha)</span>
+          {% else %}
+            <span class="text-faint">Unmeasured</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Phosphorus -->
+      <div class="report-param-item">
+        <div class="report-param-label">Available Phosphorus (P)</div>
+        <div class="report-param-value">{{ record.phosphorus if record.phosphorus is not none else '—' }}</div>
+        <div class="report-param-unit">
+          {% if analysis.ratings.phosphorus %}
+            <span class="badge badge-{{ analysis.ratings.phosphorus.badge }}">{{ analysis.ratings.phosphorus.rating }} (kg/ha)</span>
+          {% else %}
+            <span class="text-faint">Unmeasured</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Potassium -->
+      <div class="report-param-item">
+        <div class="report-param-label">Available Potassium (K)</div>
+        <div class="report-param-value">{{ record.potassium if record.potassium is not none else '—' }}</div>
+        <div class="report-param-unit">
+          {% if analysis.ratings.potassium %}
+            <span class="badge badge-{{ analysis.ratings.potassium.badge }}">{{ analysis.ratings.potassium.rating }} (kg/ha)</span>
+          {% else %}
+            <span class="text-faint">Unmeasured</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Zinc -->
+      <div class="report-param-item">
+        <div class="report-param-label">Available Zinc (Zn)</div>
+        <div class="report-param-value">{{ record.zinc if record.zinc is not none else '—' }}</div>
+        <div class="report-param-unit">
+          {% if analysis.ratings.zinc %}
+            <span class="badge badge-{{ analysis.ratings.zinc.badge }}">{{ analysis.ratings.zinc.rating }} (ppm)</span>
+          {% else %}
+            <span class="text-faint">Unmeasured</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Iron -->
+      <div class="report-param-item">
+        <div class="report-param-label">Available Iron (Fe)</div>
+        <div class="report-param-value">{{ record.iron if record.iron is not none else '—' }}</div>
+        <div class="report-param-unit">
+          {% if analysis.ratings.iron %}
+            <span class="badge badge-{{ analysis.ratings.iron.badge }}">{{ analysis.ratings.iron.rating }} (ppm)</span>
+          {% else %}
+            <span class="text-faint">Unmeasured</span>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Before-and-After Soil Improvement Projection -->
+    <div class="card" style="margin-bottom:var(--space-8);padding:var(--space-6);">
+      <h3 style="font-size:1.05rem;margin-bottom:var(--space-2);"><i class="fa-solid fa-arrows-split-up-and-left" style="color:var(--clr-accent);"></i> Projected Soil Health Improvement</h3>
+      <p class="text-xs text-muted" style="margin-bottom:var(--space-5);">Estimated trajectory after adopting recommended green manuring, balanced fertilization, and conservation practices over 2 cropping seasons.</p>
+
+      <div class="grid grid-2">
+        <div style="background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:var(--radius-md);padding:var(--space-4);">
+          <div class="text-xs" style="color:#f87171;font-weight:700;text-transform:uppercase;margin-bottom:var(--space-2);">Current Status (Baseline)</div>
+          <ul class="problem-list" style="font-size:0.82rem;">
+            <li>Health Index: <strong>{{ analysis.health_index or 'Moderate' }} / 100</strong></li>
+            <li>Identified Concerns: <strong>{{ analysis.concerns|length }} Issues Detected</strong></li>
+            <li>Soil Organic Carbon: <strong>{{ record.oc or 'Low' }}%</strong></li>
+          </ul>
+        </div>
+        <div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.25);border-radius:var(--radius-md);padding:var(--space-4);">
+          <div class="text-xs" style="color:#4ade80;font-weight:700;text-transform:uppercase;margin-bottom:var(--space-2);">Projected After Sustainable Practices</div>
+          <ul class="problem-list" style="font-size:0.82rem;">
+            <li>Target Health Index: <strong>85+ / 100 (Optimal)</strong></li>
+            <li>Carbon Sequestration: <strong>+0.25% to +0.40% Organic Carbon</strong></li>
+            <li>Moisture Capacity: <strong>+15% to +25% Water Infiltration</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendations Section -->
+    <h3 style="font-size:1.1rem;margin-bottom:var(--space-4);"><i class="fa-solid fa-lightbulb" style="color:var(--clr-accent);"></i> Smart Soil Prescription &amp; Agronomic Advice</h3>
+    <div style="display:flex;flex-direction:column;gap:var(--space-4);margin-bottom:var(--space-8);">
+      {% for rec in analysis.recommendations %}
+      <div class="rec-card" style="margin-bottom:0;">
+        <div class="rec-card-header">
+          <div class="rec-icon"><i class="{{ rec.icon }}"></i></div>
+          <div class="rec-meta">
+            <div class="rec-category">{{ rec.category }}</div>
+            <div class="rec-title">{{ rec.title }}</div>
+          </div>
+          <span class="badge priority-badge-{{ rec.priority }}">{{ rec.priority }}</span>
+        </div>
+        <p class="rec-action">{{ rec.action }}</p>
+        <div class="rec-tip">
+          <i class="fa-solid fa-leaf"></i>
+          <span><strong>Sustainable Tip:</strong> {{ rec.sustainable_tip }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Verification & Disclaimer Footer -->
+    <div style="border-top:1px dashed var(--clr-dark-border2);padding-top:var(--space-6);margin-top:var(--space-6);">
+      <div class="data-disclaimer" style="margin-bottom:var(--space-4);">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span><strong>Scientific Verification:</strong> Soil health card interpretations are educational estimates derived from ICAR guidelines. Exact chemical fertilizer doses must be confirmed with your local Krishi Vigyan Kendra (KVK) or district agricultural extension officer.</span>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--space-4);font-size:0.75rem;color:var(--clr-text-faint);">
+        <div>Generated by SoilVision AI Platform &bull; www.soilvision.ai</div>
+        <div>Standard: ICAR / NBSS&amp;LUP Benchmarks</div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

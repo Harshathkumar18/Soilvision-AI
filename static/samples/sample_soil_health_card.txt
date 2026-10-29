@@ -1,0 +1,37 @@
+================================================================================
+GOVERNMENT OF INDIA / STATE DEPARTMENT OF AGRICULTURE & FARMERS WELFARE
+SOIL HEALTH CARD (MODEL / DEMONSTRATION DATA ONLY)
+================================================================================
+[DEMONSTRATION SAMPLE CARD - FOR TESTING PURPOSES ONLY]
+
+Farmer Details:
+--------------------------------------------------------------------------------
+Farmer Name   : Ramesh Patel
+Father Name   : K. Patel
+Village       : Repalle
+District      : Guntur
+State         : Andhra Pradesh
+Survey No.    : 142/3A
+Sample Date   : 14-Oct-2026
+Soil Texture  : Clay Loam
+Intended Crop : Paddy (Rice)
+
+Laboratory Test Results & Measurements:
+--------------------------------------------------------------------------------
+1.  Soil Reaction (pH)              : 6.80  (Optimal / Neutral)
+2.  Electrical Conductivity (EC)     : 0.65  dS/m (Normal / Non-saline)
+3.  Organic Carbon (OC)             : 0.82  % (Optimal)
+4.  Available Nitrogen (N)          : 380.0 kg/ha (Medium / Optimal)
+5.  Available Phosphorus (P)        : 22.50 kg/ha (Medium / Optimal)
+6.  Available Potassium (K)         : 240.0 kg/ha (Medium / Optimal)
+7.  Available Zinc (Zn)             : 0.95  ppm (Sufficient, Critical: 0.60 ppm)
+8.  Available Iron (Fe)             : 6.20  ppm (Sufficient, Critical: 4.50 ppm)
+9.  Available Copper (Cu)           : 0.45  ppm (Sufficient, Critical: 0.20 ppm)
+10. Available Manganese (Mn)        : 3.10  ppm (Sufficient, Critical: 2.00 ppm)
+11. Available Boron (B)             : 0.65  ppm (Sufficient, Critical: 0.50 ppm)
+12. Available Sulphur (S)           : 14.20 ppm (Sufficient, Critical: 10.0 ppm)
+
+General Observations:
+Soil shows balanced macronutrient reserves with excellent organic carbon.
+Maintain carbon levels using green manuring with Sunn hemp every alternate season.
+================================================================================

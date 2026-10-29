@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block title %}About SoilVision AI — Scientific Mission &amp; Methodology{% endblock %}
+
+{% block content %}
+<div style="background:var(--grad-hero);padding:var(--space-12) 0 var(--space-8);border-bottom:1px solid var(--clr-dark-border);">
+  <div class="container">
+    <div class="section-badge" style="margin-bottom:var(--space-4);"><i class="fa-solid fa-leaf"></i> Mission &amp; Methodology</div>
+    <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:var(--space-3);">About SoilVision AI</h1>
+    <p class="text-muted" style="max-width:680px;">Bridging advanced precision agricultural science and grassroots farming realities for farmers, students, and agronomists across India.</p>
+  </div>
+</div>
+
+<section class="section-pad">
+  <div class="container">
+
+    <!-- Mission & Background Grid -->
+    <div class="grid grid-2" style="margin-bottom:var(--space-16);align-items:center;">
+      <div>
+        <div class="section-badge" style="margin-bottom:var(--space-3);"><i class="fa-solid fa-seedling"></i> Scientific Foundation</div>
+        <h2 style="font-size:1.8rem;margin-bottom:var(--space-4);">Protecting India's Living Topsoil</h2>
+        <p style="font-size:0.95rem;color:var(--clr-text-muted);line-height:1.75;margin-bottom:var(--space-4);">
+          Land degradation currently affects approximately 147 million hectares across India through water erosion, wind erosion, salinization, and biological organic carbon depletion. 
+          <strong>SoilVision AI</strong> was engineered to empower farmers with instantaneous, transparent, and actionable interpretations of their Soil Health Cards.
+        </p>
+        <p style="font-size:0.95rem;color:var(--clr-text-muted);line-height:1.75;margin-bottom:var(--space-6);">
+          By translating complex laboratory measurements into verified sustainable practices — such as green manuring with Dhaincha and Sunn hemp, biofertilizer inoculation (Rhizobium, PSB, VAM), contour bunding, and gypsum reclamation — we help farmers protect natural soil microbiology while reducing unnecessary chemical input costs.
+        </p>
+
+        <div class="grid grid-2">
+          <div class="card" style="padding:var(--space-4);">
+            <h4 style="color:var(--clr-primary-light);font-size:0.95rem;margin-bottom:var(--space-1);"><i class="fa-solid fa-check"></i> Sustainable First</h4>
+            <p class="text-xs text-muted">Organic carbon replenishment and minimum tillage prioritized over blind chemical dosing.</p>
+          </div>
+          <div class="card" style="padding:var(--space-4);">
+            <h4 style="color:var(--clr-primary-light);font-size:0.95rem;margin-bottom:var(--space-1);"><i class="fa-solid fa-language"></i> Bilingual Support</h4>
+            <p class="text-xs text-muted">Full English &amp; Telugu support designed for intuitive mobile touchscreens in the field.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Institutional Partners Card -->
+      <div class="card" style="border-top:3px solid var(--clr-primary-light);">
+        <h3 style="font-size:1.15rem;margin-bottom:var(--space-4);"><i class="fa-solid fa-building-columns" style="color:var(--clr-primary-light);"></i> Institutional Knowledge Framework</h3>
+        <ul style="display:flex;flex-direction:column;gap:var(--space-4);padding:0;">
+          <li style="border-bottom:1px solid var(--clr-dark-border);padding-bottom:var(--space-3);">
+            <strong style="color:var(--clr-text);">ICAR (Indian Council of Agricultural Research):</strong>
+            <p class="text-xs text-muted" style="margin-top:4px;">Apex agricultural research body setting national soil test critical thresholds and nutrient management standards.</p>
+          </li>
+          <li style="border-bottom:1px solid var(--clr-dark-border);padding-bottom:var(--space-3);">
+            <strong style="color:var(--clr-text);">KVK Network (Krishi Vigyan Kendras):</strong>
+            <p class="text-xs text-muted" style="margin-top:4px;">730+ district-level farm science centers providing subsidized laboratory soil tests and field demonstrations.</p>
+          </li>
+          <li style="border-bottom:1px solid var(--clr-dark-border);padding-bottom:var(--space-3);">
+            <strong style="color:var(--clr-text);">National Soil Health Card (SHC) Scheme:</strong>
+            <p class="text-xs text-muted" style="margin-top:4px;">Government program issuing 12-parameter diagnostic cards to farmers every 2 years across all agro-climatic zones.</p>
+          </li>
+          <li>
+            <strong style="color:var(--clr-text);">NBSS&amp;LUP:</strong>
+            <p class="text-xs text-muted" style="margin-top:4px;">National Bureau of Soil Survey &amp; Land Use Planning — provider of geospatial soil mapping of Indian agro-ecological zones.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Contact & Feedback Section -->
+    <div class="grid grid-2" id="contact" style="scroll-margin-top:100px;">
+      <div>
+        <div class="section-badge" style="margin-bottom:var(--space-3);"><i class="fa-solid fa-envelope"></i> Get In Touch</div>
+        <h2 style="font-size:1.6rem;margin-bottom:var(--space-3);">Questions or Collaborative Feedback?</h2>
+        <p class="text-muted" style="margin-bottom:var(--space-5);">Are you a farmer needing soil interpretation guidance or an agricultural researcher wanting to collaborate? Submit your inquiry below and our agronomy team will respond.</p>
+
+        <div class="card" style="margin-bottom:var(--space-4);padding:var(--space-4);">
+          <h4 style="font-size:0.9rem;color:var(--clr-primary-light);margin-bottom:4px;"><i class="fa-solid fa-location-dot"></i> Soil Testing Advice</h4>
+          <p class="text-xs text-muted" style="margin:0;">For immediate certified farm testing, locate your district KVK through the official portal at <code>kvk.icar.gov.in</code> or visit your local agricultural department extension office.</p>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="card">
+        <form action="{{ url_for('submit_contact') }}" method="POST">
+          <div class="form-group" style="margin-bottom:var(--space-4);">
+            <label class="form-label" for="contact_name">Your Name <span class="required">*</span></label>
+            <input type="text" class="form-input" name="name" id="contact_name" placeholder="Farmer / Agronomist Name" required>
+          </div>
+          <div class="form-group" style="margin-bottom:var(--space-4);">
+            <label class="form-label" for="contact_info">Email or Mobile Number</label>
+            <input type="text" class="form-input" name="contact" id="contact_info" placeholder="Mobile / Email for reply">
+          </div>
+          <div class="form-group" style="margin-bottom:var(--space-4);">
+            <label class="form-label" for="contact_topic">Topic</label>
+            <select class="form-select" name="topic" id="contact_topic">
+              <option value="Soil Health Question">Soil Health Question</option>
+              <option value="Report Interpretation Help">Report Interpretation Help</option>
+              <option value="Website Feedback">Website Feedback</option>
+              <option value="KVK Collaboration">KVK / Academic Collaboration</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:var(--space-6);">
+            <label class="form-label" for="contact_message">Your Message or Question <span class="required">*</span></label>
+            <textarea class="form-textarea" name="message" id="contact_message" placeholder="Ask about soil testing, erosion prevention, or share feedback..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">
+            <i class="fa-solid fa-paper-plane"></i> Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

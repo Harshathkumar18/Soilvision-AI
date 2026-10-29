@@ -1,0 +1,404 @@
+{% extends 'base.html' %}
+{% block title %}Understand Your Soil — SoilVision AI{% endblock %}
+
+{% block content %}
+
+<!-- ══════════════════════════════════════════════════════════
+     HERO SECTION
+══════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <!-- Particles Background -->
+  <div class="hero-particles" id="heroParticles"></div>
+
+  <div class="container">
+    <div class="hero-grid">
+      <!-- LEFT: Copy -->
+      <div class="hero-content fade-up">
+        <div class="hero-badge">
+          <i class="fa-solid fa-seedling"></i>
+          AI-Powered Agricultural Intelligence
+        </div>
+
+        <h1 class="hero-title display-text">
+          Understand Your Soil.<br>
+          <span class="gradient-text">Grow a Better Future.</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Transform soil data into intelligent agricultural decisions with AI-powered analysis,
+          scientific ICAR-benchmarked insights, and personalized crop recommendations.
+        </p>
+
+        <div class="hero-actions">
+          <a href="{{ url_for('analyzer') }}" class="btn btn-primary btn-xl">
+            <i class="fa-solid fa-microscope"></i> Analyze My Soil
+          </a>
+          <a href="{{ url_for('problems') }}" class="btn btn-secondary btn-xl">
+            <i class="fa-solid fa-compass"></i> Explore Soil Health
+          </a>
+        </div>
+
+        <div class="hero-trust">
+          <div class="hero-trust-badge">
+            <i class="fa-solid fa-shield-halved"></i> ICAR Aligned
+          </div>
+          <div class="hero-trust-badge">
+            <i class="fa-solid fa-certificate"></i> SHC Benchmarks
+          </div>
+          <div class="hero-trust-badge">
+            <i class="fa-solid fa-leaf"></i> Sustainable Farming
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Soil Visual -->
+      <div class="hero-visual" aria-hidden="true">
+        <div class="soil-diagram">
+          <!-- Health Ring (top-right) -->
+          <div class="health-ring">
+            <svg width="90" height="90" viewBox="0 0 90 90">
+              <circle cx="45" cy="45" r="38" fill="none" stroke="rgba(22,163,74,0.15)" stroke-width="7"/>
+              <circle cx="45" cy="45" r="38" fill="none" stroke="url(#healthGrad)" stroke-width="7"
+                stroke-dasharray="215" stroke-dashoffset="32" stroke-linecap="round"/>
+              <defs>
+                <linearGradient id="healthGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#16a34a"/>
+                  <stop offset="100%" stop-color="#22c55e"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="health-ring-text">
+              <span class="health-ring-val">85</span>
+              <span>Health</span>
+            </div>
+          </div>
+
+          <div class="soil-card-main">
+            <!-- Scan line -->
+            <div class="soil-scan-line"></div>
+
+            <!-- Plant growing from soil -->
+            <div class="soil-plant">
+              <div class="plant-top">🌱</div>
+              <div class="plant-stem" style="position:relative">
+                <div class="plant-leaf left"></div>
+                <div class="plant-leaf right"></div>
+              </div>
+            </div>
+
+            <!-- Soil layers -->
+            <div class="soil-layers">
+              <div class="soil-layer layer-topsoil" style="bottom:68%;height:32%"></div>
+              <div class="soil-layer layer-subsoil" style="bottom:35%;height:33%"></div>
+              <div class="soil-layer layer-deep"    style="bottom:0;height:35%"></div>
+            </div>
+
+            <!-- Layer labels -->
+            <div style="position:absolute;left:12px;bottom:70%;transform:translateY(50%);font-size:0.6rem;color:rgba(255,255,255,0.35);font-weight:600;letter-spacing:0.08em;">TOPSOIL</div>
+            <div style="position:absolute;left:12px;bottom:37%;transform:translateY(50%);font-size:0.6rem;color:rgba(255,255,255,0.25);font-weight:600;letter-spacing:0.08em;">SUBSOIL</div>
+            <div style="position:absolute;left:12px;bottom:12%;transform:translateY(50%);font-size:0.6rem;color:rgba(255,255,255,0.18);font-weight:600;letter-spacing:0.08em;">DEEP LAYER</div>
+
+            <!-- Grid overlay -->
+            <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.06" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="#22c55e" stroke-width="0.5"/></pattern></defs>
+              <rect width="100" height="100" fill="url(#grid)"/>
+            </svg>
+          </div>
+
+          <!-- Floating Data Cards -->
+          <div class="floating-data-card card-ph">
+            <div style="font-size:0.62rem;color:var(--clr-text-faint);margin-bottom:2px;">Soil pH</div>
+            <div class="val">6.8 <span style="font-size:0.65rem;color:var(--clr-primary-light)">Neutral ✓</span></div>
+          </div>
+          <div class="floating-data-card card-n">
+            <div style="font-size:0.62rem;color:var(--clr-text-faint);margin-bottom:2px;">Nitrogen</div>
+            <div class="val">340 <span style="font-size:0.65rem;color:var(--clr-text-faint)">kg/ha</span></div>
+          </div>
+          <div class="floating-data-card card-p">
+            <div style="font-size:0.62rem;color:var(--clr-text-faint);margin-bottom:2px;">Phosphorus</div>
+            <div class="val">18 <span style="font-size:0.65rem;color:var(--clr-text-faint)">kg/ha</span></div>
+          </div>
+          <div class="floating-data-card card-moist">
+            <div style="font-size:0.62rem;color:var(--clr-text-faint);margin-bottom:2px;">Moisture</div>
+            <div class="val">42<span style="font-size:0.65rem;">%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     STATS BAR
+══════════════════════════════════════════════════════════ -->
+<section class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item fade-up">
+        <span class="stat-number" data-target="12500" data-suffix="+">0</span>
+        <div class="stat-label">Soil Analyses Completed</div>
+      </div>
+      <div class="stat-item fade-up">
+        <span class="stat-number" data-target="8" data-suffix="">0</span>
+        <div class="stat-label">Soil Types Covered</div>
+      </div>
+      <div class="stat-item fade-up">
+        <span class="stat-number" data-target="95" data-suffix="%">0</span>
+        <div class="stat-label">ICAR Benchmark Accuracy</div>
+      </div>
+      <div class="stat-item fade-up">
+        <span class="stat-number" data-target="40" data-suffix="+">0</span>
+        <div class="stat-label">Crop Recommendations</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     HOW IT WORKS
+══════════════════════════════════════════════════════════ -->
+<section class="section-pad" style="background:var(--clr-dark-surface);">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-badge"><i class="fa-solid fa-circle-nodes"></i> Simple 3-Step Process</div>
+      <h2 class="section-title">How SoilVision AI Works</h2>
+      <p class="section-subtitle">From soil data to smart decisions in minutes, not days.</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card card fade-up">
+        <div class="step-number">1</div>
+        <div class="step-icon"><i class="fa-solid fa-microscope"></i></div>
+        <h3>Enter Soil Data</h3>
+        <p>Input your soil test parameters manually or upload your soil test report (PDF / JPG / PNG). You can also select your farm location on the interactive map.</p>
+      </div>
+      <div class="step-card card fade-up">
+        <div class="step-number">2</div>
+        <div class="step-icon"><i class="fa-solid fa-brain"></i></div>
+        <h3>AI Analyzes Results</h3>
+        <p>Our scientific engine evaluates all parameters against ICAR benchmarks — pH, NPK, organic carbon, micronutrients — and identifies deficiencies, risks, and strengths.</p>
+      </div>
+      <div class="step-card card fade-up">
+        <div class="step-number">3</div>
+        <div class="step-icon"><i class="fa-solid fa-seedling"></i></div>
+        <h3>Receive Your Prescription</h3>
+        <p>Get a detailed soil health report with personalized crop recommendations, organic amendments, and sustainable soil improvement strategies.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     FEATURES GRID
+══════════════════════════════════════════════════════════ -->
+<section class="section-pad">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-badge"><i class="fa-solid fa-star"></i> Platform Features</div>
+      <h2 class="section-title">Everything You Need to Know Your Soil</h2>
+      <p class="section-subtitle">A complete precision-agriculture toolkit, grounded in verified science.</p>
+    </div>
+
+    <div class="grid grid-3 grid-auto">
+      <div class="feature-card fade-up">
+        <div class="feature-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <h3>Soil Health Scoring</h3>
+        <p>AI-powered 0–100 health index using ICAR multi-parameter benchmarks for pH, EC, organic carbon, and all NPK levels.</p>
+      </div>
+      <div class="feature-card fade-up">
+        <div class="feature-icon"><i class="fa-solid fa-flask"></i></div>
+        <h3>NPK Analysis</h3>
+        <p>Visualize Nitrogen, Phosphorus, and Potassium levels with interactive charts, deficiency indicators, and treatment plans.</p>
+      </div>
+      <div class="feature-card fade-up">
+        <div class="feature-icon"><i class="fa-solid fa-map"></i></div>
+        <h3>Interactive Soil Map</h3>
+        <p>Explore all 7 major Indian soil zones with Leaflet.js. Pin your farm and attach soil reports to GPS locations.</p>
+      </div>
+      <div class="feature-card fade-up">
+        <div class="feature-icon"><i class="fa-solid fa-file-arrow-up"></i></div>
+        <h3>Report Upload & OCR</h3>
+        <p>Upload your physical Soil Health Card as PDF or image. Parameters are automatically extracted and pre-filled for analysis.</p>
+      </div>
+      <div class="feature-card fade-up">
+        <div class="feature-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        <h3>Soil Learning Center</h3>
+        <p>Interactive educational cards, illustrated field activities, and a scientific quiz with instant feedback for farmers and students.</p>
+      </div>
+      <div class="feature-card fade-up">
+        <div class="feature-icon"><i class="fa-solid fa-robot"></i></div>
+        <h3>AI Chat Assistant</h3>
+        <p>Ask your soil questions in English or Telugu. Powered by Gemini AI with offline expert fallback when no API key is configured.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     RECENT ANALYSES (if any)
+══════════════════════════════════════════════════════════ -->
+{% if recent_analyses %}
+<section class="section-pad-sm" style="background:var(--clr-dark-surface);">
+  <div class="container">
+    <div class="flex-between" style="margin-bottom:var(--space-8);">
+      <div>
+        <div class="section-badge" style="margin-bottom:var(--space-3);"><i class="fa-solid fa-clock-rotate-left"></i> Recent Activity</div>
+        <h2 style="font-size:1.6rem;">Latest Soil Analyses</h2>
+      </div>
+      <a href="{{ url_for('analyzer') }}" class="btn btn-secondary btn-sm">View All &rarr;</a>
+    </div>
+    <div class="grid grid-4 grid-auto">
+      {% for r in recent_analyses %}
+      <div class="card card-glow fade-up">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3);">
+          <span class="badge badge-info"><i class="fa-solid fa-map-pin"></i> {{ r.state or 'India' }}</span>
+          <span class="text-xs text-faint">
+            {% if r.created_at %}{{ r.created_at[:10] }}{% endif %}
+          </span>
+        </div>
+        <div style="font-weight:700;margin-bottom:var(--space-2);">{{ r.target_crop or 'General Farming' }}</div>
+        {% if r.ph %}
+        <div style="font-size:0.82rem;color:var(--clr-text-muted);margin-bottom:var(--space-1);">
+          <i class="fa-solid fa-flask" style="color:var(--clr-primary-light);"></i> pH: <strong>{{ r.ph }}</strong>
+        </div>
+        {% endif %}
+        {% if r.oc %}
+        <div style="font-size:0.82rem;color:var(--clr-text-muted);margin-bottom:var(--space-4);">
+          <i class="fa-solid fa-leaf" style="color:var(--clr-accent);"></i> OC: <strong>{{ r.oc }}%</strong>
+        </div>
+        {% endif %}
+        <a href="{{ url_for('view_report', record_id=r.id) }}" class="btn btn-ghost btn-sm btn-block">
+          <i class="fa-solid fa-file-lines"></i> View Report
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ══════════════════════════════════════════════════════════
+     FEATURED SOIL PROBLEMS
+══════════════════════════════════════════════════════════ -->
+<section class="section-pad">
+  <div class="container">
+    <div class="flex-between" style="margin-bottom:var(--space-8);">
+      <div>
+        <div class="section-badge" style="margin-bottom:var(--space-3);"><i class="fa-solid fa-triangle-exclamation"></i> Soil Threats</div>
+        <h2 style="font-size:1.6rem;">Common Soil Degradation Problems</h2>
+      </div>
+      <a href="{{ url_for('problems') }}" class="btn btn-secondary btn-sm no-print">Explore All &rarr;</a>
+    </div>
+
+    <div class="grid grid-3 grid-auto">
+      {% for p in featured_problems %}
+      <div class="card card-glow fade-up">
+        <div style="display:flex;align-items:center;gap:var(--space-4);margin-bottom:var(--space-4);">
+          <div class="feature-icon" style="margin-bottom:0;">
+            <i class="{{ p.icon }}"></i>
+          </div>
+          <div>
+            <span class="badge badge-{{ p.category_badge.replace('badge-','') }}" style="margin-bottom:4px;">{{ p.category }}</span>
+            <h3 style="font-size:0.95rem;margin:0;">{{ p.name }}</h3>
+          </div>
+        </div>
+        <p style="font-size:0.875rem;margin-bottom:var(--space-4);">{{ p.short_desc }}</p>
+        <a href="{{ url_for('problems') }}#{{ p.id }}" class="btn btn-ghost btn-sm btn-block">
+          <i class="fa-solid fa-book-open"></i> Learn Solutions
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     CTA BANNER
+══════════════════════════════════════════════════════════ -->
+<section class="section-pad">
+  <div class="container">
+    <div class="cta-banner">
+      <div class="section-badge" style="margin-bottom:var(--space-5);"><i class="fa-solid fa-rocket"></i> Get Started</div>
+      <h2>Ready to Transform Your Soil Health?</h2>
+      <p>Enter your soil parameters and receive a scientifically grounded prescription in seconds — completely free.</p>
+      <div class="btn-row">
+        <a href="{{ url_for('analyzer') }}" class="btn btn-primary btn-xl">
+          <i class="fa-solid fa-flask"></i> Start Free Analysis
+        </a>
+        <a href="{{ url_for('upload_page') }}" class="btn btn-secondary btn-lg">
+          <i class="fa-solid fa-file-arrow-up"></i> Upload Soil Report
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// ── Counter Animation ──────────────────────────────────────
+function animateCounter(el) {
+  const target = parseInt(el.dataset.target, 10);
+  const suffix = el.dataset.suffix || '';
+  const duration = 1800;
+  const step = target / (duration / 16);
+  let current = 0;
+  const timer = setInterval(() => {
+    current += step;
+    if (current >= target) {
+      current = target;
+      clearInterval(timer);
+    }
+    el.textContent = Math.floor(current).toLocaleString() + suffix;
+  }, 16);
+}
+
+// ── Scroll Reveal ──────────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      // Fire counters when stat numbers enter view
+      if (entry.target.querySelector && entry.target.querySelector('[data-target]')) {
+        entry.target.querySelectorAll('[data-target]').forEach(animateCounter);
+      }
+      if (entry.target.dataset && entry.target.dataset.target) {
+        animateCounter(entry.target);
+      }
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// Observe stat numbers specifically
+document.querySelectorAll('.stat-number').forEach(el => {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { animateCounter(e.target); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.5 });
+  io.observe(el);
+});
+
+// ── Particle System ────────────────────────────────────────
+const particleContainer = document.getElementById('heroParticles');
+if (particleContainer) {
+  for (let i = 0; i < 28; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.cssText = `
+      left:${Math.random()*100}%;
+      width:${2+Math.random()*3}px;
+      height:${2+Math.random()*3}px;
+      animation-duration:${8+Math.random()*12}s;
+      animation-delay:${Math.random()*10}s;
+      opacity:${0.1+Math.random()*0.3};
+    `;
+    particleContainer.appendChild(p);
+  }
+}
+</script>
+{% endblock %}
